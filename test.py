@@ -23,25 +23,28 @@ for tr in table.find_elements(By.XPATH,'//tr'):
     row = [item.text for item in tr.find_elements(By.XPATH, './/td')]
     table_data.append(row)
 
-# Pandas to Store into a DataFrame
-df = pd.DataFrame(table_data, columns=['Commodity','Sector','09-27','09-28','Change'])
-df.drop(0,inplace=True)
+driver.close()
 
+# Pandas to Store into a DataFrame
+df1 = pd.DataFrame(table_data, columns=['Commodity','Sector','09-27','09-28','Change'])
+df1.drop(0,inplace=True)
+
+# Save the extracted data with the sheet name as "Raw Data" in an Excel workbook
+file_name = 'RawData.xlsx'
+df1.to_excel(file_name)
+
+
+
+df = pd.read_excel('RawData.xlsx')
 # Data Analysis Tasks
 # Count the total number of rows
 total_rows = len(df)
 
 # Find the commodity with highest daily closing price and the corresponding price.
-commodity = df.loc[1]
-# Save the extracted data with the sheet name as "Raw Data" in an Excel workbook
-file_name = 'RawData.xlsx'
-df.to_excel(file_name)
+commodity = df['09-28'].max()
 
-driver.close()
-x = df['09-27'].max()
 # Display the results
 print("Total Number of rows are", total_rows)
-print("Commodity with the highest daily closing price & Its corresponding price is",x)
-print("Data has been saved in RawData.xlsx")
-print(df.describe())
+print("Commodity with the highest daily closing price & Its corresponding price is",commodity)
+
 
