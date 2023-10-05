@@ -26,25 +26,28 @@ for tr in table.find_elements(By.XPATH,'//tr'):
 driver.close()
 
 # Pandas to Store into a DataFrame
-df1 = pd.DataFrame(table_data, columns=['Commodity','Sector','09-27','09-28','Change'])
-df1.drop(0,inplace=True)
+df = pd.DataFrame(table_data, columns=['Commodity','Sector','09-27','09-28','Change'])
+df.drop(0,inplace=True)
+
+df['09-27'] = pd.to_numeric(df['09-27'].str.replace(',',''))
+df['09-28'] = pd.to_numeric(df['09-28'].str.replace(',',''))
 
 # Save the extracted data with the sheet name as "Raw Data" in an Excel workbook
 file_name = 'RawData.xlsx'
-df1.to_excel(file_name)
+df.to_excel(file_name)
 
 
-
-df = pd.read_excel('RawData.xlsx')
 # Data Analysis Tasks
 # Count the total number of rows
 total_rows = len(df)
 
 # Find the commodity with highest daily closing price and the corresponding price.
 commodity = df['09-28'].max()
-
+max_duration_row = df[df['09-28'] == df['09-28'].max()]
 # Display the results
 print("Total Number of rows are", total_rows)
+print(max_duration_row)
 print("Commodity with the highest daily closing price & Its corresponding price is",commodity)
+
 
 

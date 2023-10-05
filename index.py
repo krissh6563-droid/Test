@@ -1,8 +1,11 @@
 import pandas as pd
 
 df = pd.read_excel('RawData.xlsx')
+df['09-28'] = pd.to_numeric(df['09-28'])
 
 print(df.dtypes)
+print(df['09-28'])
+
 # Data Analysis Tasks
 # Count the total number of rows
 total_rows = len(df)
